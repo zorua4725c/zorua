@@ -1,5 +1,7 @@
 import discord
 import random
+import os
+import requests
 from bot_logic import gen_pass
 from bot_logic import flip_coin
 from bot_logic import gen_emodji
@@ -43,5 +45,58 @@ async def repeat(ctx, times: int, content='repeating...'):
     """Repeats a message multiple times."""
     for i in range(times):
         await ctx.send(content)
+
+@bot.command()
+async def mem(ctx):
+    memes = random.choice(os.listdir('memes'))
+    with open(f'memes/{memes}', 'rb') as f:
+        picture = discord.File(f)
+    await ctx.send(file=picture)
+
+@bot.command()
+async def mem_animal(ctx):
+    memes_animal = random.choice(os.listdir('memes_animal'))
+    with open(f'memes_animal/{memes_animal}', 'rb') as f:
+        picture = discord.File(f)
+    await ctx.send(file=picture)
+
+def get_duck_image_url():    
+    url = 'https://random-d.uk/api/random'
+    res = requests.get(url)
+    data = res.json()
+    return data['url']
+
+@bot.command('duck')
+async def duck(ctx):
+    '''Una vez que llamamos al comando duck, 
+    el programa llama a la función get_duck_image_url'''
+    image_url = get_duck_image_url()
+    await ctx.send(image_url)
+
+def get_dog_image_url():    
+    url = 'https://random.dog/woof.json'
+    res = requests.get(url)
+    data = res.json()
+    return data['url']
+
+@bot.command('dog')
+async def dog(ctx):
+    '''Una vez que llamamos al comando duck, 
+    el programa llama a la función get_duck_image_url'''
+    image_url1 = get_duck_image_url()
+    await ctx.send(image_url1)
+
+def get_fox_image_url():    
+    link = 'https://randomfox.ca/floof/'
+    res = requests.get(link)
+    data = res.json()
+    return data['link']
+
+@bot.command('fox')
+async def fox(ctx):
+    '''Una vez que llamamos al comando duck, 
+    el programa llama a la función get_duck_image_url'''
+    image_url3 = get_fox_image_url()
+    await ctx.send(image_url3)
 
 bot.run("T")
